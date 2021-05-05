@@ -21,4 +21,9 @@ class Question {
         this.option3 = option3
         this.answerNr = answerNr
     }
+
+    @JvmName("getAnswerNr1")
+     fun getAnswerNr():Int {
+        return answerNr
+    }
 }

@@ -9,8 +9,6 @@ import com.example.DS2.myapplication.QuizContract.QuestionsTable
 import java.util.*
 
 
-
-
 class QuizDbHelper(context: Context?) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     private var db: SQLiteDatabase? = null
@@ -45,7 +43,7 @@ class QuizDbHelper(context: Context?) :
         addQuestion(q3)
         val q4 = Question("A is correct again", "A", "B", "C", 1)
         addQuestion(q4)
-        val q5 = Question("B is correct again", "A", "B", "C", 2)
+        val q5 = Question("B is correct again", "A", "B", "C", 2396+)
         addQuestion(q5)
     }
 
@@ -62,17 +60,18 @@ class QuizDbHelper(context: Context?) :
     val allQuestions: List<Question>
         get() {
             val questionList: MutableList<Question> = ArrayList()
-           val  db = readableDatabase
-            val c = db.rawQuery("SELECT * FROM " + QuestionsTable.TABLE_NAME, null)
+
+            val  db = readableDatabase
+            val c = db.rawQuery("SELECT * FROM " + QuizContract.QuestionsTable.TABLE_NAME, null)
             if (c.moveToFirst()) {
                 do {
                     val question = Question()
                     question.question =
-                        c.getString(c.getColumnIndex(QuestionsTable.COLUMN_QUESTION))
-                    question.option1 = c.getString(c.getColumnIndex(QuestionsTable.COLUMN_OPTION1))
-                    question.option2 = c.getString(c.getColumnIndex(QuestionsTable.COLUMN_OPTION2))
-                    question.option3 = c.getString(c.getColumnIndex(QuestionsTable.COLUMN_OPTION3))
-                    question.answerNr = c.getInt(c.getColumnIndex(QuestionsTable.COLUMN_ANSWER_NR))
+                        c.getString(c.getColumnIndex(QuizContract.QuestionsTable.COLUMN_QUESTION))
+                    question.option1 = c.getString(c.getColumnIndex(QuizContract.QuestionsTable.COLUMN_OPTION1))
+                    question.option2 = c.getString(c.getColumnIndex(QuizContract.QuestionsTable.COLUMN_OPTION2))
+                    question.option3 = c.getString(c.getColumnIndex(QuizContract.QuestionsTable.COLUMN_OPTION3))
+                    question.answerNr = c.getInt(c.getColumnIndex(QuizContract.QuestionsTable.COLUMN_ANSWER_NR))
                     questionList.add(question)
                 } while (c.moveToNext())
             }
