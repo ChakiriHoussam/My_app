@@ -13,11 +13,13 @@ import kotlinx.android.synthetic.main.activity_quize.*
 import java.util.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), IChapterSelected {
     private val REQUEST_CODE_QUIZ = 1
     val SHARED_PREFS = "sharedPrefs"
     val KEY_HIGHSCORE = "keyHighscore"
     private var textViewHighscore: TextView? = null
+    private var textViewChapteName: TextView? = null
+
     private var highscore = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,13 +27,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         textViewHighscore=findViewById(R.id.text_view_highscore)
+        textViewChapteName=findViewById(R.id.txt_chapter_name)
+
+        supportFragmentManager.beginTransaction().add(R.id.fragmentHolder,ChapterFragment(this)).commit();
         loadHighscore()
+
         val buttonStartQuiz = findViewById<Button>(R.id.button_start_quiz)
         buttonStartQuiz.setOnClickListener { startQuiz() }
     }
 
     private fun startQuiz() {
+        if(txt_chapter_name.text==="Select Chapter."){
+            Toast.makeText(this, "Please Select Chapter First", Toast.LENGTH_SHORT).show()
+            return
+        }
         val intent = Intent(this@MainActivity, Quize::class.java)
+        intent.putExtra("CHAPTER_NAME",txt_chapter_name.text)
         startActivityForResult(intent, REQUEST_CODE_QUIZ)
     }
 
@@ -62,6 +73,10 @@ class MainActivity : AppCompatActivity() {
         val editor = prefs.edit()
         editor.putInt(KEY_HIGHSCORE, highscore)
         editor.apply()
+    }
+
+    override fun selectedChapter(name: String?) {
+        textViewChapteName?.text  = name;
     }
 
 

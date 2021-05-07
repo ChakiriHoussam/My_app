@@ -5,6 +5,8 @@ class Question {
     var option1: String? = null
     var option2: String? = null
     var option3: String? = null
+    var chapterId: String? = null
+
     var answerNr = 0
 
     constructor() {}
@@ -13,12 +15,15 @@ class Question {
         option1: String?,
         option2: String?,
         option3: String?,
-        answerNr: Int
-    ) {
+        answerNr: Int,
+        chapterId: String?
+
+        ) {
         this.question = question
         this.option1 = option1
         this.option2 = option2
         this.option3 = option3
+        this.chapterId = chapterId
         this.answerNr = answerNr
     }
 

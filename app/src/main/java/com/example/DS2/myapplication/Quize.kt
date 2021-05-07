@@ -59,7 +59,8 @@ public  class Quize: AppCompatActivity() {
         textColorDefaultRb=this.rb1?.textColors
 
         val dbHelper = QuizDbHelper(this)
-        questionList = dbHelper.allQuestions;
+        val chapterName = intent.getStringExtra("CHAPTER_NAME");
+        questionList = dbHelper.getQuestionsBasedOnChapter(chapterName);
         questionCountTotal= questionList!!.size
 
 
@@ -110,14 +111,14 @@ public  class Quize: AppCompatActivity() {
 
     private fun checkAnswer() {
         answered = true
-        val rbSelected =radio_group.checkedRadioButtonId
-        //val answerNr = rbGroup?.indexOfChild(rbSelected)?.plus(1)
-        val answerNr=radio_group.indexOfChild(rbSelected).plus(1)
+        val rbSelectedId =radio_group.checkedRadioButtonId
+        val rb = findViewById<RadioButton>(rbSelectedId);
+        val answerNr=radio_group.indexOfChild(rb)+1;
         if (answerNr == currentQuestion?.getAnswerNr())
         {
             score++
             //textViewScore?.setText("Score: " + score)
-            text_view_score.setText("Score : " + score)
+            text_view_score.text = "Score : " + score
         }
         showSolution()
     }
@@ -164,10 +165,10 @@ public  class Quize: AppCompatActivity() {
 
 }
 
-private fun Any.indexOfChild(rbSelected: Int): Int {
-    return 0
-
-}
+//private fun Any.indexOfChild(rbSelected: Int): Int {
+//    return 0
+//
+//}
 
 //private fun RadioGroup.indexOfChild(rbSelected: Int): Int {
     //return 0
