@@ -85,6 +85,7 @@ class QuizDbHelper(context: Context?) :
         val q16=Question("Comment peut-on stocker une donnee sur android ?","Serveur via Rest","SDPunchedCard","SQLite",3,"Android Sqlite")
 
         val q17=Question("Comment mettre a jour une BD ?","MigrateAdaapter","SQLiteOpenHelper","SQLIntent",2,"Android Sqlite")
+        val q18=Question("Comment mettre a jour une BD ?","MigrateAdaapter","SQLiteOpenHelper","SQLIntent",1,"Android Sqlite")
         addQuestion(q1)
         addQuestion(q2)
         addQuestion(q3)
@@ -198,7 +199,7 @@ class QuizDbHelper(context: Context?) :
 
     companion object {
         private const val DATABASE_NAME = "MyAwesomeQuiz.db"
-        private const val DATABASE_VERSION = 18
+        private const val DATABASE_VERSION = 19
 
     }
 }
