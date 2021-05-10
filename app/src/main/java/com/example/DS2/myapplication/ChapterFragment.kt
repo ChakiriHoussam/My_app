@@ -28,7 +28,7 @@ class ChapterFragment(val iChapterSelected: IChapterSelected) : Fragment() {
         val listView = view.findViewById<ListView>(R.id.lvChapters)
         val dbHelper = QuizDbHelper(activity)
         chapterList = dbHelper.allChapter;
-        val adapter = ArrayAdapter(activity!!.applicationContext, android.R.layout.simple_list_item_1, chapterList)
+        val adapter = ArrayAdapter(activity!!.applicationContext, android.R.layout.simple_dropdown_item_1line, chapterList)
         listView.adapter = adapter
         listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
             // This is your listview's selected item

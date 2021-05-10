@@ -6,15 +6,18 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_quize.*
+import java.lang.String
 import java.util.*
 
 
 public  class Quize: AppCompatActivity() {
     private val Extra_Score= "extraScore"
+    private val COUNTDOWN_IN_MILLIS: Long = 30000
 
     private var textViewQuestion: TextView? = null
     private var textViewScore: TextView? = null
@@ -27,6 +30,11 @@ public  class Quize: AppCompatActivity() {
     private var buttonConfirmNext: Button? = null
     ////part5
     private var textColorDefaultRb: ColorStateList? = null
+    private var textColorDefaultCd: ColorStateList? = null
+
+
+    private var countDownTimer: CountDownTimer? = null
+    private var timeLeftInMillis: Long = 0
 
 
     private var questionList: List<Question>? = null
@@ -45,7 +53,8 @@ public  class Quize: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quize)
-        textViewQuestion = findViewById(R.id.text_view_question)
+        //textViewQuestion = findViewById(R.id.text_view_question)
+        textViewQuestion=text_view_question
         textViewScore = findViewById(R.id.text_view_score)
         textViewQuestionCount = findViewById(R.id.text_view_question_count)
         textViewCountDown = findViewById(R.id.text_view_countdown)
@@ -57,6 +66,7 @@ public  class Quize: AppCompatActivity() {
 
 
         textColorDefaultRb=this.rb1?.textColors
+        textColorDefaultCd=this.textViewCountDown?.textColors
 
         val dbHelper = QuizDbHelper(this)
         val chapterName = intent.getStringExtra("CHAPTER_NAME");
@@ -102,15 +112,46 @@ public  class Quize: AppCompatActivity() {
             textViewQuestionCount!!.text = "Question: $questionCounter/$questionCountTotal"
             answered = false
             buttonConfirmNext!!.text = "Confirm"
+            timeLeftInMillis = COUNTDOWN_IN_MILLIS;
+            startCountDown();
         } else {
             finishQuiz()
         }
     }
 
 
+    private fun startCountDown() {
+        countDownTimer = object : CountDownTimer(timeLeftInMillis, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                timeLeftInMillis = millisUntilFinished
+                updateCountDownText()
+            }
+
+            override fun onFinish() {
+                timeLeftInMillis = 0
+                updateCountDownText()
+                checkAnswer()
+            }
+        }.start()
+    }
+
+    private fun updateCountDownText() {
+        val minutes = (timeLeftInMillis / 1000).toInt() / 60
+        val seconds = (timeLeftInMillis / 1000).toInt() % 60
+        val timeFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
+        textViewCountDown!!.text = timeFormatted
+        if (timeLeftInMillis < 10000) {
+            textViewCountDown!!.setTextColor(Color.RED)
+        } else {
+            textViewCountDown!!.setTextColor(textColorDefaultCd)
+        }
+    }
+
 
     private fun checkAnswer() {
         answered = true
+        countDownTimer?.cancel();
+
         val rbSelectedId =radio_group.checkedRadioButtonId
         val rb = findViewById<RadioButton>(rbSelectedId);
         val answerNr=radio_group.indexOfChild(rb)+1;
@@ -157,8 +198,17 @@ public  class Quize: AppCompatActivity() {
         val resultIntent = Intent()
         resultIntent.putExtra(Extra_Score, score)
         setResult(RESULT_OK, resultIntent)
-        finish();
+        finish()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (countDownTimer!=null){
+
+            countDownTimer?.cancel()
+        }
+    }
+
 
 
 

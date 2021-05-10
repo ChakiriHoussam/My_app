@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
+import com.example.DS2.myapplication.QuizContract.ChapterTable
 import com.example.DS2.myapplication.QuizContract.QuestionsTable
 import java.util.*
 
@@ -34,36 +35,87 @@ class QuizDbHelper(context: Context?) :
         db.execSQL(SQL_CREATE_QUESTIONS_TABLE)
         db.execSQL(SQL_CREATE_CHAPTER_TABLE)
 
+
+        fillChapterTable()
         fillQuestionsTable()
-        fillChapterTable();
+
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL("DROP TABLE IF EXISTS " + QuestionsTable.TABLE_NAME)
-        db.execSQL("DROP TABLE IF EXISTS " +  QuizContract.ChapterTable.TABLE_NAME)
+        db.execSQL("DROP TABLE IF EXISTS " +  ChapterTable.TABLE_NAME)
         onCreate(db)
     }
 
     private fun fillQuestionsTable() {
-        val q1 = Question("A is correct", "A", "B", "C", 1,"Android Fragments")
+        val q1 = Question("Which lifecycle method is called to make an activity visible?", "onPause()", "onVisible()", ".onStart()", 3,"Android Fragments")
+
+        val q2 = Question("Which of the following is not an activity lifecycle state?", "Started", ".Waiting", "Created", 2,"Android Fragments")
+
+        val q3 = Question("Which lifecycle method is called to give an activity focus?", ".onResume()", "onVisible()", "onFocus()", 1,"Android Fragments")
+
+        val q4 = Question("Your app contains a physics simulation that requires heavy computation to display onscreen. Then the user gets a phone call. Which of the following is true?", "During the phone call, you should continue computing the positions of objects in the physics simulation.", ".During the phone call, you should continue computing the positions of objects in the physics simulation.", "onFocus()", 2,"Android Fragments")
+
+        val q5 = Question("\n" +
+                "To make a class lifecycle-aware through the Jetpack lifecycle library, which interface should the class implement?", "Lifecycle", "Lifecycle.Event", ".\n" +
+                "LifecycleObserver", 3,"Android Fragments")
+
+        val q6 = Question("Which lifecycle method should you override to pause the simulation when the app is not on the screen?", ".onStop()", "onSaveInstanceState()", "onDestroy()", 1,"Android Fragments")
+
+        val q7 = Question("Who is the developer of Kotlin?", "Eclipse", "IntelliJ IDEA", ".JetBrains", 3,"general information on kotlin")
+
+        val q8 = Question("Which version of Android Studio has adopted kotlin init?", "2.4", ".3.4", "2.", 2,"general information on kotlin")
+
+        val q9 = Question("\n" +
+                "Which is the Project Management Tool made up of Kotlin Language?","Zoho",".Trello ","Sales Force",2,"general information on kotlin")
+
+        val q10 = Question("What is the current version of Kotlin?","1.1","1.2",".1.3.4",1,"general information on kotlin")
+
+        val q11=Question("\n" +
+                "Which was the first purely Object Oriented Programming language developed?","Java","Kotlin",".smallTalk",1,"general information on kotlin")
+
+        val q12 = Question("C'est quoi un intent?", "R1: LayoutManager", "R2: pont entre les activités", "R3 : SDKManager", 2,"Intents")
+
+        val q13=Question("objectif d'utilisation d'un intent?","R1: Invoquer une vue","R2: Avoir des vues identiques,","R3 : Invoquer une autre activité",3,"Intents")
+
+        val q14=Question("Methode permettant de lancer une activité?","R1: StartActivity","R2: StartView","R3 : ViewStart",1,"Intents")
+
+        val q15=Question("Methode putExtra permet de ?","R1: Transmettre données","R2: Copier données","R3 : Recuperer données",1,"Intents")
+
+        val q16=Question("Comment peut-on stocker une donnee sur android ?","Serveur via Rest","SDPunchedCard","SQLite",3,"Android Sqlite")
+
+        val q17=Question("Comment mettre a jour une BD ?","MigrateAdaapter","SQLiteOpenHelper","SQLIntent",2,"Android Sqlite")
         addQuestion(q1)
-        val q2 = Question("B is correct", "A", "B", "C", 2,"Android Fragments")
         addQuestion(q2)
-        val q3 = Question("C is correct", "A", "B", "C", 3,"Android Intents")
         addQuestion(q3)
-        val q4 = Question("A is correct again", "A", "B", "C", 1,"Android Intents")
         addQuestion(q4)
-        val q5 = Question("B is correct again", "A", "B", "C", 2,"Android Sqlite")
         addQuestion(q5)
+        addQuestion(q6)
+        addQuestion(q7)
+        addQuestion(q8)
+        addQuestion(q9)
+        addQuestion(q10)
+        addQuestion(q11)
+        addQuestion(q12)
+        addQuestion(q13)
+        addQuestion(q14)
+        addQuestion(q15)
+        addQuestion(q16)
+        addQuestion(q17)
+
+
     }
 
     private fun fillChapterTable() {
         val c1 = Chapter("Android Fragments")
         val c2 = Chapter("Android Sqlite")
-        val c3 = Chapter("Android Intents")
+        val c3 = Chapter("general information on kotlin")
+        val c4= Chapter("intents")
+
         addChapter(c1)
         addChapter(c2)
         addChapter(c3)
+        addChapter(c4)
     }
 
     private fun addQuestion(question: Question) {
@@ -146,7 +198,7 @@ class QuizDbHelper(context: Context?) :
 
     companion object {
         private const val DATABASE_NAME = "MyAwesomeQuiz.db"
-        private const val DATABASE_VERSION = 11
+        private const val DATABASE_VERSION = 18
 
     }
 }
